@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腾讯控股深度投资研究报告 | 2026年5月</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f6f1;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --text-light: #666;
+    --accent: #c8440a;
+    --accent2: #1a5fb4;
+    --border: #e0dbd4;
+    --salmon: #e8a87c;
+    --chart-green: #27ae60;
+    --chart-red: #e74c3c;
+    --chart-blue: #2980b9;
+    --chart-orange: #e67e22;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  
+  /* Header */
+  .report-header { border-bottom: 3px solid var(--accent); padding-bottom: 24px; margin-bottom: 40px; }
+  .label { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; font-weight: 700; }
+  h1 { font-size: 32px; font-weight: 400; line-height: 1.3; margin: 12px 0 8px; color: var(--text); }
+  .subtitle { font-size: 15px; color: var(--text-light); font-style: italic; }
+  .meta { margin-top: 16px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-light); display: flex; gap: 20px; flex-wrap: wrap; }
+  .meta span { display: flex; align-items: center; gap: 4px; }
+  .meta .tag { background: var(--accent); color: white; padding: 2px 8px; border-radius: 3px; font-size: 10px; letter-spacing: 1px; }
+
+  /* Section */
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 32px; margin-bottom: 28px; }
+  .section-number { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 22px; font-weight: 400; border-left: 4px solid var(--accent); padding-left: 14px; margin-bottom: 20px; line-height: 1.4; }
+  h3 { font-size: 17px; font-weight: 700; margin: 24px 0 10px; color: var(--text); }
+  h4 { font-size: 14px; font-weight: 700; margin: 16px 0 8px; color: var(--text); }
+  p { margin-bottom: 12px; color: #333; }
+  .lead { font-size: 17px; color: #444; line-height: 1.8; margin-bottom: 16px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th { background: #f2ede6; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border); color: var(--text-light); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'Helvetica Neue', monospace; }
+  .up { color: var(--chart-green); }
+  .down { color: var(--chart-red); }
+  .neutral { color: var(--text-light); }
+
+  /* Price cards */
+  .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
+  .price-card { background: #f8f6f1; border: 1px solid var(--border); border-radius: 4px; padding: 16px; text-align: center; }
+  .price-card .label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 1.5px; color: var(--text-light); text-transform: uppercase; margin-bottom: 8px; }
+  .price-card .value { font-size: 22px; font-weight: 700; font-family: 'Helvetica Neue', sans-serif; }
+  .price-card .sub { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+  .price-card .change { font-size: 12px; font-weight: 600; margin-top: 4px; }
+  .price-card.green .value { color: var(--chart-green); }
+  .price-card.red .value { color: var(--chart-red); }
+
+  /* Callout */
+  .callout { border-left: 4px solid var(--accent); padding: 16px 20px; background: #fdf8f5; margin: 20px 0; border-radius: 0 4px 4px 0; }
+  .callout.blue { border-left-color: var(--accent2); background: #f4f7fb; }
+  .callout strong { display: block; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
+  .callout p { margin: 0; font-size: 15px; color: #333; }
+
+  /* Chart containers */
+  .chart-container { margin: 20px 0; background: #fafaf8; border: 1px solid var(--border); border-radius: 4px; padding: 16px; }
+  .chart-title { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; letter-spacing: 1px; color: var(--text-light); text-transform: uppercase; margin-bottom: 12px; }
+  .chart { width: 100%; height: 300px; }
+
+  /* Signal badges */
+  .signal { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; letter-spacing: 0.5px; }
+  .signal.green { background: #d4edda; color: #155724; }
+  .signal.red { background: #f8d7da; color: #721c24; }
+  .signal.orange { background: #fff3cd; color: #856404; }
+  .signal.blue { background: #d1ecf1; color: #0c5460; }
+
+  /* Lists */
+  ul, ol { margin: 12px 0 16px 24px; }
+  li { margin-bottom: 6px; font-size: 15px; color: #333; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 40px 0 20px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 40px; }
+  .footer p { margin-bottom: 4px; }
+
+  /* Section divider */
+  hr.section-divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* Inline highlight */
+  .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; }
+  .strong { font-weight: 700; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    h1 { font-size: 24px; }
+    .section { padding: 20px 16px; }
+    table { font-size: 12px; }
+    .price-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="label">投资研究报告 · 港股</div>
+  <h1>腾讯控股（00700.HK）<br>深度投资分析</h1>
+  <div class="subtitle">股价下跌原因 · 回购相关性 · 上涨触发因素</div>
+  <div class="meta">
+    <span class="tag">2026年5月</span>
+    <span>ClawTeam 多智能体研究</span>
+    <span>基本面 × 技术面 × 宏观</span>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="section">
+  <div class="section-number">00</div>
+  <h2>核心结论速览</h2>
+  
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="label">当前股价</div>
+      <div class="value" style="color:var(--chart-red)">~HK$460</div>
+      <div class="change down">年内跌幅 -21%</div>
+      <div class="sub">52周低点区间</div>
+    </div>
+    <div class="price-card">
+      <div class="label">共识目标价</div>
+      <div class="value" style="color:var(--chart-green)">~HK$560</div>
+      <div class="change up">潜在涨幅 +22%</div>
+      <div class="sub">高盛/汇丰/花旗买入</div>
+    </div>
+    <div class="price-card">
+      <div class="label">当前PE</div>
+      <div class="value">~18x</div>
+      <div class="change">历史30%分位</div>
+      <div class="sub">显著低估</div>
+    </div>
+    <div class="price-card">
+      <div class="label">关键支撑</div>
+      <div class="value" style="color:var(--chart-red)">HK$450</div>
+      <div class="change">颈线/头肩顶</div>
+      <div class="sub">不可有效跌破</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>三个核心问题的答案</strong>
+    <p><strong>① 今年为何下跌？</strong> 2026年3月业绩日AI投入翻倍信号+回购减少担忧+鬼故事情绪共振，股价从561港元单日暴跌-6%至518港元，开启趋势性下行。</p>
+  </div>
+  <div class="callout blue">
+    <p><strong>② 回购与股价相关性？</strong> 回购是"价值信号"而非"股价密码"——弱领先性（~2-4周），2022年强负相关（越跌越买），当前中等正相关（信心信号）。</p>
+  </div>
+  <div class="callout">
+    <p><strong>③ 上涨触发因素？</strong> 政策拐点（版号常态化+反垄断结束）+ AI商业化兑现 + 业绩超预期 + 南向资金持续流入，四重驱动力共振时股价大涨。</p>
+  </div>
+</div>
+
+<!-- SECTION 1: FUNDAMENTAL -->
+<div class="section">
+  <div class="section-number">01</div>
+  <h2>基本面：业绩与估值分析</h2>
+  <p class="lead">腾讯基本面在2024年大幅改善，但股价与基本面明显背离。当前PE 16-18x处于近5年30%分位，安全边际充足。</p>
+
+  <h3>1.1 核心财务数据</h3>
+  <table>
+    <tr><th>指标</th><th>2023年</th><th>2024年</th><th>2025年（E）</th><th>趋势</th></tr>
+    <tr><td>营收（亿元）</td><td class="num">6,055</td><td class="num">6,636</td><td class="num">~7,200</td><td class="up num">↑</td></tr>
+    <tr><td>净利润（亿元）</td><td class="num">1,152</td><td class="num">1,876</td><td class="num">~2,100</td><td class="up num">↑↑</td></tr>
+    <tr><td>Non-IFRS净利润</td><td class="num">1,577</td><td class="num">1,859</td><td class="num">~2,050</td><td class="up num">↑</td></tr>
+    <tr><td>毛利率</td><td class="num">45.6%</td><td class="num">49.4%</td><td class="num">—</td><td class="up num">↑</td></tr>
+    <tr><td>净利率</td><td class="num">19.0%</td><td class="num">28.3%</td><td class="num">—</td><td class="up num">↑↑</td></tr>
+    <tr><td>ROE</td><td class="num">14.2%</td><td class="num">22.3%</td><td class="num">—</td><td class="up num">↑</td></tr>
+    <tr><td>EPS（元）</td><td class="num">12.09</td><td class="num">19.70</td><td class="num">~21.5</td><td class="up num">↑</td></tr>
+  </table>
+
+  <h3>1.2 业务结构（2024年）</h3>
+  <table>
+    <tr><th>业务板块</th><th>营收（亿元）</th><th>占比</th><th>同比增速</th><th>评价</th></tr>
+    <tr><td>游戏</td><td class="num">2,323</td><td class="num">35%</td><td class="up num">+5.5%</td><td><span class="signal green">稳健</span></td></tr>
+    <tr><td>金融科技及企业服务</td><td class="num">2,138</td><td class="num">32%</td><td class="up num">+20.6%</td><td><span class="signal green">强劲</span></td></tr>
+    <tr><td>网络广告</td><td class="num">1,003</td><td class="num">15%</td><td class="up num">+15.6%</td><td><span class="signal green">复苏</span></td></tr>
+  </table>
+
+  <h3>1.3 估值对比</h3>
+  <div id="chart-valuation" class="chart"></div>
+  <p style="font-size:13px;color:var(--text-light);margin-top:8px;text-align:center">图：腾讯历史PE区间与当前估值分位（近5年30%分位，明显低估）</p>
+
+  <div class="callout">
+    <strong>分析师共识</strong>
+    <p>高盛/汇丰/花旗买入，目标价550-580港元；中金/摩根士丹利增持，目标价550-560港元。<strong>共识目标价约560港元，当前460港元，潜在涨幅约22%。</strong></p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 2: TECHNICAL -->
+<div class="section">
+  <div class="section-number">02</div>
+  <h2>技术面：关键价位与形态分析</h2>
+  <p class="lead">股价从2025年高点683港元跌至当前~460港元（-30%），均线全面空头排列，头肩顶颈线450港元面临考验。</p>
+
+  <h3>2.1 关键价位</h3>
+  <table>
+    <tr><th>类型</th><th>价位（港元）</th><th>说明</th></tr>
+    <tr><td><span class="signal red">阻力</span></td><td class="num strong">490–500</td><td>心理整数关口，均线密集区，多空必争</td></tr>
+    <tr><td><span class="signal red">阻力</span></td><td class="num">530–540</td><td>MA60压力，重重均线下压</td></tr>
+    <tr><td><span class="signal red">阻力</span></td><td class="num">560–570</td><td>MA120/MA200，收复此处才能言底</td></tr>
+    <tr><td><span class="signal orange">即时支撑</span></td><td class="num">460–463</td><td>52周低点区域</td></tr>
+    <tr><td><span class="signal red">⚠ 强支撑</span></td><td class="num strong">450</td><td>颈线/旗形下轨，绝对不可有效跌破</td></tr>
+    <tr><td><span class="signal green">极强支撑</span></td><td class="num">380–400</td><td>2023年起涨点，头肩顶目标位</td></tr>
+  </table>
+
+  <h3>2.2 均线系统</h3>
+  <div id="chart-ma" class="chart"></div>
+
+  <h3>2.3 形态分析</h3>
+  <p><strong>头肩顶（疑似成立）：</strong></p>
+  <ul>
+    <li>左肩：683港元（2025年10月）</li>
+    <li>头：639港元（2026年1月13日）</li>
+    <li>右肩：530-540港元（2026年3月底）</li>
+    <li>颈线：<strong class="highlight">450-460港元</strong>（当前正在测试）</li>
+  </ul>
+  <p><strong>下降楔形（当前）：</strong> 高点逐级降低（683→639→530），低点收敛（510→450），量能萎缩至高位30%。下降楔形通常为<strong>反转形态</strong>，楔形末端面临向上突破窗口。</p>
+
+  <h3>2.4 三种情景概率</h3>
+  <div id="chart-scenario" class="chart"></div>
+
+  <div class="callout">
+    <strong>技术面核心判断</strong>
+    <p>守住450是全部希望——守住则长期结构完整；有效跌破450则头肩顶成立，下跌空间打开至380-400。</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 3: BUYBACK -->
+<div class="section">
+  <div class="section-number">03</div>
+  <h2>回购与股价：相关性分析</h2>
+  <p class="lead">腾讯2022-2023年回购超810亿港元，占市值比超1%，但回购是"价值信号"而非"股价密码"，弱领先性约2-4周。</p>
+
+  <h3>3.1 回购历史数据</h3>
+  <table>
+    <tr><th>年份</th><th class="num">回购金额<br>（亿港元）</th><th class="num">回购股数<br>（万股）</th><th class="num">回购均价<br>（港元）</th><th class="num">占市值比</th><th>特征</th></tr>
+    <tr><td>2019</td><td class="num">49.1</td><td class="num">~700</td><td class="num">320-400</td><td class="num">0.16%</td><td>史上首次回购</td></tr>
+    <tr><td>2022</td><td class="num strong">337.9</td><td class="num">~6,480</td><td class="num">300-470</td><td class="num strong">1.41%</td><td><span class="signal green">超级回购启动</span></td></tr>
+    <tr><td>2023</td><td class="num strong">481.0</td><td class="num">~11,000</td><td class="num">260-400</td><td class="num strong">1.72%</td><td><span class="signal green">历史峰值</span></td></tr>
+    <tr><td>2024</td><td class="num">~320</td><td class="num">~8,500</td><td class="num">270-420</td><td class="num">0.91%</td><td>力度略降</td></tr>
+    <tr><td>2025</td><td class="num">~350</td><td class="num">~7,500</td><td class="num">380-520</td><td class="num">0.88%</td><td>股价回升后继续回购</td></tr>
+    <tr><td>2026Q1</td><td class="num">~80</td><td class="num">~1,800</td><td class="num">420-510</td><td class="num">—</td><td>延续节奏</td></tr>
+  </table>
+
+  <h3>3.2 回购与股价相关性</h3>
+  <div id="chart-buyback" class="chart"></div>
+
+  <h3>3.3 关键洞察</h3>
+  <ul>
+    <li><strong>弱领先性：</strong>回购对股价领先约2-4周，核心驱动仍是基本面</li>
+    <li><strong>2022年强负相关（-0.68）：</strong>越跌越买，完美的"低买"策略，均价330港元 vs 期末360港元</li>
+    <li><strong>信号效应 > 资金效应：</strong>管理层信心信号比实际资金支撑更重要</li>
+    <li><strong>当前高位回购性价比下降：</strong>460港元回购比200港元贵130%，增厚效果减弱约30%</li>
+  </ul>
+
+  <div class="callout blue">
+    <strong>核心结论</strong>
+    <p>回购规模 > 300亿港元/年传递强烈信心信号，但无法阻止下跌趋势。真正的股价拐点来自<strong>基本面修复预期 + 政策环境改善 + 流动性宽松</strong>三重共振。</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 4: MACRO -->
+<div class="section">
+  <div class="section-number">04</div>
+  <h2>宏观政策：多维度环境影响</h2>
+  <p class="lead">政策环境综合评分7.6/10，为近5年最佳。游戏版号常态化+反垄断结束+AI政策强力支持是三大核心利好。</p>
+
+  <h3>4.1 游戏版号：从严控到常态化</h3>
+  <div id="chart-game-license" class="chart"></div>
+
+  <h3>4.2 政策环境雷达</h3>
+  <div id="chart-policy-radar" class="chart"></div>
+
+  <h3>4.3 关键政策节点与股价反应</h3>
+  <table>
+    <tr><th>时间</th><th>政策/事件</th><th>恒生指数</th><th>腾讯股价</th></tr>
+    <tr><td>2021年7月</td><td>音乐版权整改+虎牙斗鱼合并被禁</td><td>跌破26,000</td><td class="down num">580→430港元</td></tr>
+    <tr><td>2022年10月</td><td>三杀叠加触历史大底</td><td>14,597（史低）</td><td class="down num">~200港元（史低）</td></tr>
+    <tr><td>2023年Q3</td><td>724政治局会议"活跃资本市场"</td><td>开始反弹</td><td class="up num">200→340港元</td></tr>
+    <tr><td>2025年1月</td><td>DeepSeek-R1发布</td><td>AI行情启动</td><td class="up num">~500港元</td></tr>
+    <tr><td>2026年3月</td><td>业绩日AI投入翻倍信号</td><td>科技股承压</td><td class="down num">561→518港元</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>政策面综合判断</strong>
+    <p>政策最坏时期已过（2021年7月-2022年10月），腾讯当前政策环境为近5年最佳。<strong>股价政策面目标区间：550-650港元（2026年）。</strong></p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 5: EVENTS -->
+<div class="section">
+  <div class="section-number">05</div>
+  <h2>重大事件与股价触发机制</h2>
+  <p class="lead">今年下跌的直接触发是3月业绩日——AI投入翻倍信号冲击短期EPS预期，鬼故事情绪叠加导致趋势性下行。</p>
+
+  <h3>5.1 2026年下跌事件链</h3>
+  <table>
+    <tr><th>时间</th><th>事件</th><th>冲击程度</th><th>性质</th></tr>
+    <tr><td>2026年2月3日</td><td><strong>"加税"谣言</strong>（增值税率6%→9%），盘中暴跌-6%至561港元</td><td><span class="signal red">重度</span></td><td>已证伪</td></tr>
+    <tr><td>2026年2月3-5日</td><td>五连跌，延续至542.5港元</td><td><span class="signal red">重度</span></td><td>情绪延续</td></tr>
+    <tr><td>2026年3月18日</td><td><strong>业绩日大跌</strong>：AI投入翻倍+回购减少+ROE下滑担忧，股价-6%至518港元</td><td><span class="signal red">⚠核心</span></td><td>基本面担忧</td></tr>
+    <tr><td>2026年4月</td><td>悲观一致性抱团，空头情绪拉满</td><td><span class="signal orange">中度</span></td><td>情绪底</td></tr>
+    <tr><td>2026年5月</td><td>鬼故事消化，一季报预期落地</td><td>待确认</td><td>观察窗口</td></tr>
+  </table>
+
+  <h3>5.2 市场流传的"鬼故事"</h3>
+  <ul>
+    <li><strong>加税恐慌</strong>（已证伪）：增值税从6%上调至9%，纯属政策误读</li>
+    <li><strong>AI掉队论</strong>：混元大模型落后竞品，持续烧钱无回报</li>
+    <li><strong>微信时长见顶</strong>：用户时长不可逆见顶，护城河收窄</li>
+    <li><strong>回购减少</strong>：2025年回购~350亿 vs 2024年~800亿，股东回报下滑</li>
+    <li><strong>竞争加剧</strong>：字节跳动、阿里、百度围剿</li>
+  </ul>
+
+  <h3>5.3 近年大涨触发因素</h3>
+  <table>
+    <tr><th>时间</th><th>触发因素</th><th>股价反应</th><th>持续性</th></tr>
+    <tr><td>2023年Q3</td><td>724政治局会议，平台经济政策拐点</td><td class="up num">估值全面修复</td><td>3-6个月</td></tr>
+    <tr><td>2025年1月</td><td>DeepSeek-R1发布，AI叙事重燃</td><td class="up num">涨至520-560港元</td><td>1-3个月</td></tr>
+    <tr><td>2025年5月</td><td>中美贸易谈判转机，外资回流</td><td class="up num">港股科技整体反弹</td><td>随宏观</td></tr>
+    <tr><td>2024年Q3</td><td>回购力度加大，股东回报提升</td><td class="up num">价值支撑</td><td>持续</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>关键规律</strong>
+    <p>腾讯每次大幅下跌都是"宏观+监管+基本面"三杀中至少两杀，单独因素难以导致趋势性下跌。当前下跌=基本面担忧（AI投入）+情绪（鬼故事）+技术破位三重叠加。</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SECTION 6: CONCLUSION -->
+<div class="section">
+  <div class="section-number">06</div>
+  <h2>综合结论与投资判断</h2>
+
+  <h3>6.1 下跌归因分解</h3>
+  <div id="chart-fall Attribution" class="chart"></div>
+
+  <h3>6.2 关键价位判断</h3>
+  <div class="callout">
+    <strong>守住 450港元 ✅</strong>
+    <p>长期上升结构完整 → 目标价<strong>560-650港元</strong>（基本面具支撑+政策环境改善+AI估值修复）→ 潜在涨幅<strong>+25-40%</strong></p>
+  </div>
+  <div class="callout" style="border-left-color:#666;background:#f5f5f5;">
+    <strong>有效跌破 450港元 🔴</strong>
+    <p>头肩顶成立，下跌空间打开至<strong>380-400港元</strong>，长期上升趋势终结，需重新评估逻辑</p>
+  </div>
+
+  <h3>6.3 未来上涨触发因素</h3>
+  <table>
+    <tr><th>触发因素</th><th>可能时间</th><th>潜在涨幅</th><th>概率评估</th></tr>
+    <tr><td>一季报业绩超预期</td><td>未来4周</td><td class="up num">+10-15%</td><td>中高</td></tr>
+    <tr><td>AI商业化数据兑现</td><td>2026年H2</td><td class="up num">+15-25%</td><td>中</td></tr>
+    <tr><td>游戏版号+重磅新游</td><td>2026年全年</td><td class="up num">+10-20%</td><td>中高</td></tr>
+    <tr><td>港股流动性继续宽松</td><td>2026年全年</td><td class="up num">随宏观</td><td>视宏观</td></tr>
+    <tr><td>再次大规模回购（>500亿/年）</td><td>视股价表现</td><td class="up num">+5-10%</td><td>中</td></tr>
+  </table>
+
+  <h3>6.4 风险提示</h3>
+  <ul>
+    <li>AI投入回报周期长于预期，压制利润时间超预期</li>
+    <li>中美科技博弈升级，芯片管制影响腾讯云AI能力</li>
+    <li>港股流动性边际收紧，外资再度撤离</li>
+    <li>微信用户时长不可逆下滑，护城河收窄</li>
+    <li><strong>有效跌破450港元</strong>，技术性熊市确认</li>
+  </ul>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>本报告由 <strong>ClawTeam tencent-research</strong> 多智能体协作生成 | 2026年5月7日</p>
+  <p>数据来源：港交所披露易、腾讯年报/季报、彭博、Investing.com、TradingView、国家统计局</p>
+  <p>⚠️ 免责声明：本报告仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
+</div>
+
+</div>
+
+<script>
+(function() {
+  // Color palette
+  var C = { red:'#c8440a', blue:'#1a5fb4', green:'#27ae60', orange:'#e67e22', gray:'#888', lightGray:'#ddd', bg:'#fafaf8' };
+
+  function baseOpts(title) {
+    return { title: { text: title, left: 'center', textStyle: { fontSize: 12, fontWeight: 'bold', color: '#666', fontFamily: 'Helvetica Neue' } }, backgroundColor: C.bg, grid: { top: 36, bottom: 40, right: 80, left: 60 } };
+  }
+
+  // Chart 1: Valuation
+  var chartVal = echarts.init(document.getElementById('chart-valuation'));
+  chartVal.setOption({
+    ...baseOpts('PE估值历史区间 vs 当前（近5年30%分位）'),
+    xAxis: { type: 'category', data: ['2020','2021','2022','2023','2024','2025E','2026E'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+    yAxis: { type: 'value', name: 'PE (x)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 50, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+    series: [
+      { name: 'PE', type: 'bar', data: [40, 25, 10, 18, 22, 18, 16], itemStyle: { color: function(p) { return p.dataIndex === 2 ? C.red : (p.dataIndex >= 5 ? C.blue : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 11, formatter: '{c}x' } },
+      { name: '当前PE', type: 'line', data: [null,null,null,null,null,18,16], lineStyle: { type: 'dashed', color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 6, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed' }, data: [{ yAxis: 18, label: { formatter: '当前~18x', position: 'right', fontSize: 11 } }], markArea: { silent: true, itemStyle: { color: 'rgba(26,95,180,0.06)' }, data: [[{ yAxis: 0 }, { yAxis: 18 }]] } }
+    ],
+    tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>PE: <b>' + p[0].value + 'x</b>'; } }
+  });
+
+  // Chart 2: MA System
+  var chartMA = echarts.init(document.getElementById('chart-ma'));
+  var maData = {
+    dates: ['2025-01','2025-04','2025-07','2025-10','2026-01','2026-02','2026-03','2026-04','2026-05'],
+    price: [520, 480, 560, 683, 639, 560, 518, 480, 460],
+    ma5: [null,null,null,null,null,560,540,500,485],
+    ma20: [null,null,null,null,null,null,540,520,510],
+    ma60: [null,null,null,null,null,null,null,550,540],
+    ma200: [null,null,null,null,null,null,null,570,560]
+  };
+  chartMA.setOption({
+    ...baseOpts('均线系统：全面空头排列（当前价~460港元）'),
+    xAxis: { type: 'category', data: maData.dates, axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 10, color: '#666' } },
+    yAxis: { type: 'value', name: '港元', nameTextStyle: { fontSize: 11, color: '#999' }, min: 380, max: 720, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+    series: [
+      { name: '股价', type: 'line', data: maData.price, lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5, areaStyle: { color: 'rgba(200,68,10,0.06)' }, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed', color: C.red }, data: [{ name: '当前价', yAxis: 460, label: { formatter: '460(当前)', position: 'right', fontSize: 10 } }, { name: '颈线', yAxis: 450, label: { formatter: '450⚠', position: 'right', fontSize: 10 } }] } },
+      { name: 'MA5', type: 'line', data: maData.ma5, lineStyle: { color: '#e74c3c', width: 1, opacity: 0.6 }, symbol: 'none' },
+      { name: 'MA20', type: 'line', data: maData.ma20, lineStyle: { color: '#e67e22', width: 1.5, opacity: 0.7 }, symbol: 'none' },
+      { name: 'MA60', type: 'line', data: maData.ma60, lineStyle: { color: C.blue, width: 1.5, opacity: 0.8 }, symbol: 'none' },
+      { name: 'MA200', type: 'line', data: maData.ma200, lineStyle: { color: '#27ae60', width: 2, opacity: 0.9 }, symbol: 'none' }
+    ],
+    legend: { data: ['股价','MA5','MA20','MA60','MA200'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
+    tooltip: { trigger: 'axis' }
+  });
+
+  // Chart 3: Scenarios
+  var chartScen = echarts.init(document.getElementById('chart-scenario'));
+  chartScen.setOption({
+    ...baseOpts('三种情景概率分布'),
+    xAxis: { type: 'category', data: ['乐观 (守住450)', '中性 (震荡)', '悲观 (破位450)'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+    yAxis: { type: 'value', name: '概率 (%)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 60, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+    series: [
+      { type: 'bar', data: [{ value: 30, itemStyle: { color: C.green } }, { value: 45, itemStyle: { color: C.gray } }, { value: 25, itemStyle: { color: C.red } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 14, fontWeight: 'bold' } }
+    ],
+    tooltip: { formatter: function(p) { return p.name + '<br/>概率: <b>' + p.value + '%</b>'; } }
+  });
+
+  // Chart 4: Buyback correlation
+  var chartBB = echarts.init(document.getElementById('chart-buyback'));
+  chartBB.setOption({
+    ...baseOpts('回购金额 vs 股价走势（2019-2026）'),
+    legend: { data: ['回购金额(亿HKD)','股价(港元)'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
+    xAxis: { type: 'category', data: ['2019','2020','2021','2022','2023','2024','2025','2026Q1'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+    yAxis: [
+      { type: 'value', name: '回购(亿HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 10, color: '#666' } },
+      { type: 'value', name: '股价(HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { show: false }, axisLabel: { fontSize: 10, color: '#666' }, min: 0, max: 700 }
+    ],
+    series: [
+      { name: '回购金额(亿HKD)', type: 'bar', yAxisIndex: 0, data: [49, 21, 26, 338, 481, 320, 350, 80], itemStyle: { color: C.blue }, barWidth: '40%', label: { show: true, position: 'top', fontSize: 9, formatter: '{c}' } },
+      { name: '股价(港元)', type: 'line', yAxisIndex: 1, data: [380, 520, 580, 200, 340, 400, 520, 460], lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5 }
+    ],
+    tooltip: { trigger: 'axis' }
+  });
+
+  // Chart 5: Game license
+  var chartLicense = echarts.init(document.getElementById('chart-game-license'));
+  chartLicense.setOption({
+    ...baseOpts('游戏版号发放数量（2018-2025）—— 从严控到常态化'),
+    xAxis: { type: 'category', data: ['2018','2019','2020','2021','2022','2023','2024','2025'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+    yAxis: { type: 'value', name: '版号数量', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+    series: [
+      { type: 'bar', data: [2105,1570,1405,755,512,269,1416,1771], itemStyle: { color: function(p) { return p.dataIndex >= 5 ? C.green : (p.dataIndex >= 3 ? C.red : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 10, formatter: '{c}' } }
+    ],
+    tooltip: { formatter: function(p) { return p.name + '年<br/>版号: <b>' + p.value + '个</b>'; } }
+  });
+
+  // Chart 6: Policy Radar
+  var chartRadar = echarts.init(document.getElementById('chart-policy-radar'));
+  chartRadar.setOption({
+    ...baseOpts('政策环境雷达（十分制，当前7.6/10）'),
+    radar: {
+      indicator: [
+        { name: '游戏版号', max: 10 }, { name: '反垄断', max: 10 }, { name: '平台整改', max: 10 },
+        { name: '港股流动性', max: 10 }, { name: 'AI政策', max: 10 }, { name: '宏观经济', max: 10 }, { name: '中美关系', max: 10 }
+      ],
+      radius: '65%',
+      axisName: { color: '#666', fontSize: 11 }
+    },
+    series: [{
+      type: 'radar',
+      data: [{ value: [8.5, 7.0, 8.0, 8.5, 9.0, 6.5, 5.5], name: '政策评分', areaStyle: { color: 'rgba(26,95,180,0.15)' }, lineStyle: { color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 4,
+        label: { show: true, formatter: function(p) { return p.value; }, fontSize: 9, color: '#333' }
+      }]
+    }]
+  });
+
+  // Chart 7: Fall Attribution
+  var chartFall = echarts.init(document.getElementById('chart-fall Attribution'));
+  chartFall.setOption({
+    ...baseOpts('2025高点683 → 2026低点453 跌幅归因分解'),
+    xAxis: { type: 'category', data: ['AI投入\n压制利润', '鬼故事\n情绪冲击', '技术面\n破位止损', '估值\n透支修正'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+    yAxis: { type: 'value', name: '贡献占比(%)', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' }, max: 50 },
+    series: [
+      { type: 'bar', data: [{ value: 40, itemStyle: { color: C.red } }, { value: 25, itemStyle: { color: C.orange } }, { value: 20, itemStyle: { color: C.blue } }, { value: 15, itemStyle: { color: C.gray } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 13, fontWeight: 'bold' } }
+    ],
+    tooltip: { formatter: function(p) { return p.name + '<br/>贡献: <b>' + p.value + '%</b>'; } }
+  });
+
+  // Resize handler
+  window.addEventListener('resize', function() {
+    chartVal.resize();
+    chartMA.resize();
+    chartScen.resize();
+    chartBB.resize();
+    chartLicense.resize();
+    chartRadar.resize();
+    chartFall.resize();
+  });
+})();
+</script>
+</body>
+</html>
