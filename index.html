@@ -447,136 +447,136 @@ var Vr={},Br={};var Fr=function(){function t(t,e,n){var i=this;this._sleepAfterS
 <script>
 (function() {
   function initCharts() {
-(function() {
-  // Color palette
-  var C = { red:'#c8440a', blue:'#1a5fb4', green:'#27ae60', orange:'#e67e22', gray:'#888', lightGray:'#ddd', bg:'#fafaf8' };
-
-  function baseOpts(title) {
-    return { title: { text: title, left: 'center', textStyle: { fontSize: 12, fontWeight: 'bold', color: '#666', fontFamily: 'Helvetica Neue' } }, backgroundColor: C.bg, grid: { top: 36, bottom: 40, right: 80, left: 60 } };
-  }
-
-  // Chart 1: Valuation
-  var chartVal = echarts.init(document.getElementById('chart-valuation'));
-  chartVal.setOption({
-    ...baseOpts('PE估值历史区间 vs 当前（近5年30%分位）'),
-    xAxis: { type: 'category', data: ['2020','2021','2022','2023','2024','2025E','2026E'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
-    yAxis: { type: 'value', name: 'PE (x)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 50, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
-    series: [
-      { name: 'PE', type: 'bar', data: [40, 25, 10, 18, 22, 18, 16], itemStyle: { color: function(p) { return p.dataIndex === 2 ? C.red : (p.dataIndex >= 5 ? C.blue : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 11, formatter: '{c}x' } },
-      { name: '当前PE', type: 'line', data: [null,null,null,null,null,18,16], lineStyle: { type: 'dashed', color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 6, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed' }, data: [{ yAxis: 18, label: { formatter: '当前~18x', position: 'right', fontSize: 11 } }], markArea: { silent: true, itemStyle: { color: 'rgba(26,95,180,0.06)' }, data: [[{ yAxis: 0 }, { yAxis: 18 }]] } }
-    ],
-    tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>PE: <b>' + p[0].value + 'x</b>'; } }
-  });
-
-  // Chart 2: MA System
-  var chartMA = echarts.init(document.getElementById('chart-ma'));
-  var maData = {
-    dates: ['2025-01','2025-04','2025-07','2025-10','2026-01','2026-02','2026-03','2026-04','2026-05'],
-    price: [520, 480, 560, 683, 639, 560, 518, 480, 460],
-    ma5: [null,null,null,null,null,560,540,500,485],
-    ma20: [null,null,null,null,null,null,540,520,510],
-    ma60: [null,null,null,null,null,null,null,550,540],
-    ma200: [null,null,null,null,null,null,null,570,560]
-  };
-  chartMA.setOption({
-    ...baseOpts('均线系统：全面空头排列（当前价~460港元）'),
-    xAxis: { type: 'category', data: maData.dates, axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 10, color: '#666' } },
-    yAxis: { type: 'value', name: '港元', nameTextStyle: { fontSize: 11, color: '#999' }, min: 380, max: 720, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
-    series: [
-      { name: '股价', type: 'line', data: maData.price, lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5, areaStyle: { color: 'rgba(200,68,10,0.06)' }, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed', color: C.red }, data: [{ name: '当前价', yAxis: 460, label: { formatter: '460(当前)', position: 'right', fontSize: 10 } }, { name: '颈线', yAxis: 450, label: { formatter: '450⚠', position: 'right', fontSize: 10 } }] } },
-      { name: 'MA5', type: 'line', data: maData.ma5, lineStyle: { color: '#e74c3c', width: 1, opacity: 0.6 }, symbol: 'none' },
-      { name: 'MA20', type: 'line', data: maData.ma20, lineStyle: { color: '#e67e22', width: 1.5, opacity: 0.7 }, symbol: 'none' },
-      { name: 'MA60', type: 'line', data: maData.ma60, lineStyle: { color: C.blue, width: 1.5, opacity: 0.8 }, symbol: 'none' },
-      { name: 'MA200', type: 'line', data: maData.ma200, lineStyle: { color: '#27ae60', width: 2, opacity: 0.9 }, symbol: 'none' }
-    ],
-    legend: { data: ['股价','MA5','MA20','MA60','MA200'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
-    tooltip: { trigger: 'axis' }
-  });
-
-  // Chart 3: Scenarios
-  var chartScen = echarts.init(document.getElementById('chart-scenario'));
-  chartScen.setOption({
-    ...baseOpts('三种情景概率分布'),
-    xAxis: { type: 'category', data: ['乐观 (守住450)', '中性 (震荡)', '悲观 (破位450)'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
-    yAxis: { type: 'value', name: '概率 (%)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 60, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
-    series: [
-      { type: 'bar', data: [{ value: 30, itemStyle: { color: C.green } }, { value: 45, itemStyle: { color: C.gray } }, { value: 25, itemStyle: { color: C.red } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 14, fontWeight: 'bold' } }
-    ],
-    tooltip: { formatter: function(p) { return p.name + '<br/>概率: <b>' + p.value + '%</b>'; } }
-  });
-
-  // Chart 4: Buyback correlation
-  var chartBB = echarts.init(document.getElementById('chart-buyback'));
-  chartBB.setOption({
-    ...baseOpts('回购金额 vs 股价走势（2019-2026）'),
-    legend: { data: ['回购金额(亿HKD)','股价(港元)'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
-    xAxis: { type: 'category', data: ['2019','2020','2021','2022','2023','2024','2025','2026Q1'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
-    yAxis: [
-      { type: 'value', name: '回购(亿HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 10, color: '#666' } },
-      { type: 'value', name: '股价(HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { show: false }, axisLabel: { fontSize: 10, color: '#666' }, min: 0, max: 700 }
-    ],
-    series: [
-      { name: '回购金额(亿HKD)', type: 'bar', yAxisIndex: 0, data: [49, 21, 26, 338, 481, 320, 350, 80], itemStyle: { color: C.blue }, barWidth: '40%', label: { show: true, position: 'top', fontSize: 9, formatter: '{c}' } },
-      { name: '股价(港元)', type: 'line', yAxisIndex: 1, data: [380, 520, 580, 200, 340, 400, 520, 460], lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5 }
-    ],
-    tooltip: { trigger: 'axis' }
-  });
-
-  // Chart 5: Game license
-  var chartLicense = echarts.init(document.getElementById('chart-game-license'));
-  chartLicense.setOption({
-    ...baseOpts('游戏版号发放数量（2018-2025）—— 从严控到常态化'),
-    xAxis: { type: 'category', data: ['2018','2019','2020','2021','2022','2023','2024','2025'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
-    yAxis: { type: 'value', name: '版号数量', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
-    series: [
-      { type: 'bar', data: [2105,1570,1405,755,512,269,1416,1771], itemStyle: { color: function(p) { return p.dataIndex >= 5 ? C.green : (p.dataIndex >= 3 ? C.red : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 10, formatter: '{c}' } }
-    ],
-    tooltip: { formatter: function(p) { return p.name + '年<br/>版号: <b>' + p.value + '个</b>'; } }
-  });
-
-  // Chart 6: Policy Radar
-  var chartRadar = echarts.init(document.getElementById('chart-policy-radar'));
-  chartRadar.setOption({
-    ...baseOpts('政策环境雷达（十分制，当前7.6/10）'),
-    radar: {
-      indicator: [
-        { name: '游戏版号', max: 10 }, { name: '反垄断', max: 10 }, { name: '平台整改', max: 10 },
-        { name: '港股流动性', max: 10 }, { name: 'AI政策', max: 10 }, { name: '宏观经济', max: 10 }, { name: '中美关系', max: 10 }
-      ],
-      radius: '65%',
-      axisName: { color: '#666', fontSize: 11 }
-    },
-    series: [{
-      type: 'radar',
-      data: [{ value: [8.5, 7.0, 8.0, 8.5, 9.0, 6.5, 5.5], name: '政策评分', areaStyle: { color: 'rgba(26,95,180,0.15)' }, lineStyle: { color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 4,
-        label: { show: true, formatter: function(p) { return p.value; }, fontSize: 9, color: '#333' }
-      }]
-    }]
-  });
-
-  // Chart 7: Fall Attribution
-  var chartFall = echarts.init(document.getElementById('chart-fall-attribution'));
-  chartFall.setOption({
-    ...baseOpts('2025高点683 → 2026低点453 跌幅归因分解'),
-    xAxis: { type: 'category', data: ['AI投入\n压制利润', '鬼故事\n情绪冲击', '技术面\n破位止损', '估值\n透支修正'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
-    yAxis: { type: 'value', name: '贡献占比(%)', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' }, max: 50 },
-    series: [
-      { type: 'bar', data: [{ value: 40, itemStyle: { color: C.red } }, { value: 25, itemStyle: { color: C.orange } }, { value: 20, itemStyle: { color: C.blue } }, { value: 15, itemStyle: { color: C.gray } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 13, fontWeight: 'bold' } }
-    ],
-    tooltip: { formatter: function(p) { return p.name + '<br/>贡献: <b>' + p.value + '%</b>'; } }
-  });
-
-  // Resize handler
-  window.addEventListener('resize', function() {
-    chartVal.resize();
-    chartMA.resize();
-    chartScen.resize();
-    chartBB.resize();
-    chartLicense.resize();
-    chartRadar.resize();
-    chartFall.resize();
-  });
-}
+    (function() {
+      // Color palette
+      var C = { red:'#c8440a', blue:'#1a5fb4', green:'#27ae60', orange:'#e67e22', gray:'#888', lightGray:'#ddd', bg:'#fafaf8' };
+    
+      function baseOpts(title) {
+        return { title: { text: title, left: 'center', textStyle: { fontSize: 12, fontWeight: 'bold', color: '#666', fontFamily: 'Helvetica Neue' } }, backgroundColor: C.bg, grid: { top: 36, bottom: 40, right: 80, left: 60 } };
+      }
+    
+      // Chart 1: Valuation
+      var chartVal = echarts.init(document.getElementById('chart-valuation'));
+      chartVal.setOption({
+        ...baseOpts('PE估值历史区间 vs 当前（近5年30%分位）'),
+        xAxis: { type: 'category', data: ['2020','2021','2022','2023','2024','2025E','2026E'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+        yAxis: { type: 'value', name: 'PE (x)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 50, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+        series: [
+          { name: 'PE', type: 'bar', data: [40, 25, 10, 18, 22, 18, 16], itemStyle: { color: function(p) { return p.dataIndex === 2 ? C.red : (p.dataIndex >= 5 ? C.blue : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 11, formatter: '{c}x' } },
+          { name: '当前PE', type: 'line', data: [null,null,null,null,null,18,16], lineStyle: { type: 'dashed', color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 6, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed' }, data: [{ yAxis: 18, label: { formatter: '当前~18x', position: 'right', fontSize: 11 } }], markArea: { silent: true, itemStyle: { color: 'rgba(26,95,180,0.06)' }, data: [[{ yAxis: 0 }, { yAxis: 18 }]] } }
+        ],
+        tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>PE: <b>' + p[0].value + 'x</b>'; } }
+      });
+    
+      // Chart 2: MA System
+      var chartMA = echarts.init(document.getElementById('chart-ma'));
+      var maData = {
+        dates: ['2025-01','2025-04','2025-07','2025-10','2026-01','2026-02','2026-03','2026-04','2026-05'],
+        price: [520, 480, 560, 683, 639, 560, 518, 480, 460],
+        ma5: [null,null,null,null,null,560,540,500,485],
+        ma20: [null,null,null,null,null,null,540,520,510],
+        ma60: [null,null,null,null,null,null,null,550,540],
+        ma200: [null,null,null,null,null,null,null,570,560]
+      };
+      chartMA.setOption({
+        ...baseOpts('均线系统：全面空头排列（当前价~460港元）'),
+        xAxis: { type: 'category', data: maData.dates, axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 10, color: '#666' } },
+        yAxis: { type: 'value', name: '港元', nameTextStyle: { fontSize: 11, color: '#999' }, min: 380, max: 720, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+        series: [
+          { name: '股价', type: 'line', data: maData.price, lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5, areaStyle: { color: 'rgba(200,68,10,0.06)' }, markLine: { silent: true, symbol: 'none', lineStyle: { type: 'dashed', color: C.red }, data: [{ name: '当前价', yAxis: 460, label: { formatter: '460(当前)', position: 'right', fontSize: 10 } }, { name: '颈线', yAxis: 450, label: { formatter: '450⚠', position: 'right', fontSize: 10 } }] } },
+          { name: 'MA5', type: 'line', data: maData.ma5, lineStyle: { color: '#e74c3c', width: 1, opacity: 0.6 }, symbol: 'none' },
+          { name: 'MA20', type: 'line', data: maData.ma20, lineStyle: { color: '#e67e22', width: 1.5, opacity: 0.7 }, symbol: 'none' },
+          { name: 'MA60', type: 'line', data: maData.ma60, lineStyle: { color: C.blue, width: 1.5, opacity: 0.8 }, symbol: 'none' },
+          { name: 'MA200', type: 'line', data: maData.ma200, lineStyle: { color: '#27ae60', width: 2, opacity: 0.9 }, symbol: 'none' }
+        ],
+        legend: { data: ['股价','MA5','MA20','MA60','MA200'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
+        tooltip: { trigger: 'axis' }
+      });
+    
+      // Chart 3: Scenarios
+      var chartScen = echarts.init(document.getElementById('chart-scenario'));
+      chartScen.setOption({
+        ...baseOpts('三种情景概率分布'),
+        xAxis: { type: 'category', data: ['乐观 (守住450)', '中性 (震荡)', '悲观 (破位450)'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+        yAxis: { type: 'value', name: '概率 (%)', nameTextStyle: { fontSize: 11, color: '#999' }, min: 0, max: 60, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+        series: [
+          { type: 'bar', data: [{ value: 30, itemStyle: { color: C.green } }, { value: 45, itemStyle: { color: C.gray } }, { value: 25, itemStyle: { color: C.red } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 14, fontWeight: 'bold' } }
+        ],
+        tooltip: { formatter: function(p) { return p.name + '<br/>概率: <b>' + p.value + '%</b>'; } }
+      });
+    
+      // Chart 4: Buyback correlation
+      var chartBB = echarts.init(document.getElementById('chart-buyback'));
+      chartBB.setOption({
+        ...baseOpts('回购金额 vs 股价走势（2019-2026）'),
+        legend: { data: ['回购金额(亿HKD)','股价(港元)'], bottom: 0, textStyle: { fontSize: 10 }, icon: 'roundRect' },
+        xAxis: { type: 'category', data: ['2019','2020','2021','2022','2023','2024','2025','2026Q1'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+        yAxis: [
+          { type: 'value', name: '回购(亿HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 10, color: '#666' } },
+          { type: 'value', name: '股价(HKD)', nameTextStyle: { fontSize: 10, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { show: false }, axisLabel: { fontSize: 10, color: '#666' }, min: 0, max: 700 }
+        ],
+        series: [
+          { name: '回购金额(亿HKD)', type: 'bar', yAxisIndex: 0, data: [49, 21, 26, 338, 481, 320, 350, 80], itemStyle: { color: C.blue }, barWidth: '40%', label: { show: true, position: 'top', fontSize: 9, formatter: '{c}' } },
+          { name: '股价(港元)', type: 'line', yAxisIndex: 1, data: [380, 520, 580, 200, 340, 400, 520, 460], lineStyle: { color: C.red, width: 2.5 }, symbol: 'circle', symbolSize: 5 }
+        ],
+        tooltip: { trigger: 'axis' }
+      });
+    
+      // Chart 5: Game license
+      var chartLicense = echarts.init(document.getElementById('chart-game-license'));
+      chartLicense.setOption({
+        ...baseOpts('游戏版号发放数量（2018-2025）—— 从严控到常态化'),
+        xAxis: { type: 'category', data: ['2018','2019','2020','2021','2022','2023','2024','2025'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+        yAxis: { type: 'value', name: '版号数量', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' } },
+        series: [
+          { type: 'bar', data: [2105,1570,1405,755,512,269,1416,1771], itemStyle: { color: function(p) { return p.dataIndex >= 5 ? C.green : (p.dataIndex >= 3 ? C.red : C.gray); } }, barWidth: '50%', label: { show: true, position: 'top', fontSize: 10, formatter: '{c}' } }
+        ],
+        tooltip: { formatter: function(p) { return p.name + '年<br/>版号: <b>' + p.value + '个</b>'; } }
+      });
+    
+      // Chart 6: Policy Radar
+      var chartRadar = echarts.init(document.getElementById('chart-policy-radar'));
+      chartRadar.setOption({
+        ...baseOpts('政策环境雷达（十分制，当前7.6/10）'),
+        radar: {
+          indicator: [
+            { name: '游戏版号', max: 10 }, { name: '反垄断', max: 10 }, { name: '平台整改', max: 10 },
+            { name: '港股流动性', max: 10 }, { name: 'AI政策', max: 10 }, { name: '宏观经济', max: 10 }, { name: '中美关系', max: 10 }
+          ],
+          radius: '65%',
+          axisName: { color: '#666', fontSize: 11 }
+        },
+        series: [{
+          type: 'radar',
+          data: [{ value: [8.5, 7.0, 8.0, 8.5, 9.0, 6.5, 5.5], name: '政策评分', areaStyle: { color: 'rgba(26,95,180,0.15)' }, lineStyle: { color: C.blue, width: 2 }, symbol: 'circle', symbolSize: 4,
+            label: { show: true, formatter: function(p) { return p.value; }, fontSize: 9, color: '#333' }
+          }]
+        }]
+      });
+    
+      // Chart 7: Fall Attribution
+      var chartFall = echarts.init(document.getElementById('chart-fall-attribution'));
+      chartFall.setOption({
+        ...baseOpts('2025高点683 → 2026低点453 跌幅归因分解'),
+        xAxis: { type: 'category', data: ['AI投入\n压制利润', '鬼故事\n情绪冲击', '技术面\n破位止损', '估值\n透支修正'], axisLine: { lineStyle: { color: C.lightGray } }, axisLabel: { fontSize: 11, color: '#666' } },
+        yAxis: { type: 'value', name: '贡献占比(%)', nameTextStyle: { fontSize: 11, color: '#999' }, axisLine: { lineStyle: { color: C.lightGray } }, splitLine: { lineStyle: { color: '#f0ebe4' } }, axisLabel: { fontSize: 11, color: '#666' }, max: 50 },
+        series: [
+          { type: 'bar', data: [{ value: 40, itemStyle: { color: C.red } }, { value: 25, itemStyle: { color: C.orange } }, { value: 20, itemStyle: { color: C.blue } }, { value: 15, itemStyle: { color: C.gray } }], barWidth: '50%', label: { show: true, position: 'top', formatter: function(p) { return p.value + '%'; }, fontSize: 13, fontWeight: 'bold' } }
+        ],
+        tooltip: { formatter: function(p) { return p.name + '<br/>贡献: <b>' + p.value + '%</b>'; } }
+      });
+    
+      // Resize handler
+      window.addEventListener('resize', function() {
+        chartVal.resize();
+        chartMA.resize();
+        chartScen.resize();
+        chartBB.resize();
+        chartLicense.resize();
+        chartRadar.resize();
+        chartFall.resize();
+      });
+    })();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCharts);
@@ -584,7 +584,7 @@ var Vr={},Br={};var Fr=function(){function t(t,e,n){var i=this;this._sleepAfterS
     initCharts();
   }
 })();
-)();
+
 </script>
 </body>
 </html>
